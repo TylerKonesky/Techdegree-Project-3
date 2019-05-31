@@ -16,6 +16,7 @@ const $cvv = $('#cvv');
 const $registerButton = $('button');
 
 const $invalidName = $('<div id="wrong_name" style="color:maroon; font-size:12px">You may only use letters. No numbers or special characters</div>')
+const $invalidNameBlank = $('<div id="wrong_name" style="color:maroon; font-size:12px">This field cannot be blank</div>')
 const $invalidEmail = $('<div id="wrong_email" style="color:maroon; font-size:12px">Email must be formatted correctly: example@example.com</div>')
 const $invalidCC = $('<div id="wrong_cc" style="color:maroon; font-size:12px">Invalid Credit Card. Must only contain 16 numbers</div>')
 const $invalidZip = $('<div id="wrong_zip" style="color:maroon; font-size:12px">Please enter your 5 digit zip code</div>')
@@ -36,16 +37,25 @@ $('#name').focus();
 
 $inputName.prev().append($invalidName);
 $invalidName.hide();
+$inputName.prev().append($invalidNameBlank);
+$invalidNameBlank.hide();
 
 $($inputName).blur( ()=>{
     if(validName($inputName.val())){
         $inputName.css({'border-color':'#c1deeb'});
         $invalidName.hide();
+        $invalidNameBlank.hide();
         namePass = true; 
+    }else if($inputName.val() != ''){
+        $inputName.css({'border-color':'red'});
+        $invalidName.show();
+        $invalidNameBlank.hide();
+        namePass = false; 
     }else{
-    $inputName.css({'border-color':'red'});
-    $invalidName.show();
-    namePass = false; 
+        $inputName.css({'border-color':'red'});
+        $invalidNameBlank.show();
+        $invalidName.hide();
+        namePass = false; 
     }
 })
 
