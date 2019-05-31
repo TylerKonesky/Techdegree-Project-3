@@ -1,19 +1,116 @@
 
-const inputName = $('#name');
-const inputEmail = $('#mail');
-const creditCard = $('#cc-num');
-const zipCode = $('#zip');
-const cvv = $('#cvv')
 
 
-// document.addEventListener('input', (e)=>{
-//     console.log(validName(e.target.value));
-//     console.log(validEmail(e.target.value));
-//     console.log(validCreditcard(e.target.value));
-//     console.log(validZip(e.target.value));
-//     console.log(validCvv(e.target.value));
-    
-// })
+
+//******************** Form submission and validations ************************** */
+
+//created the variables that will be used in this section.
+//this includes the invalid input text boxes that will appear
+//on incorrect inputs. 
+
+const $inputName = $('#name');
+const $inputEmail = $('#mail');
+const $creditCard = $('#cc-num');
+const $zipCode = $('#zip');
+const $cvv = $('#cvv');
+const $registerButton = $('button');
+
+const $invalidName = $('<div id="wrong_name" style="color:maroon; font-size:12px">You may only use letters. No numbers or special characters</div>')
+const $invalidEmail = $('<div id="wrong_email" style="color:maroon; font-size:12px">Email must be formatted correctly: example@example.com</div>')
+const $invalidCC = $('<div id="wrong_cc" style="color:maroon; font-size:12px">Invalid Credit Card. Must only contain 16 numbers</div>')
+const $invalidZip = $('<div id="wrong_zip" style="color:maroon; font-size:12px">Please enter your 5 digit zip code</div>')
+const $invalidCvv = $('<div id="wrong_cvv" style="color:maroon; font-size:12px">Please enter valid 3 digit cvv code from the back of your card</div>')
+
+let namePass = false;
+let emailPass = false; 
+let ccPass = false; 
+let zipPass = false; 
+let cvvPass = false; 
+ 
+
+//set default cursor location to the "name" field
+
+$('#name').focus();
+
+//running tests to add or remove help boxes depending on valid submissions. 
+
+$inputName.prev().append($invalidName);
+$invalidName.hide();
+
+$($inputName).blur( ()=>{
+    if(validName($inputName.val())){
+        $inputName.css({'border-color':'#c1deeb'});
+        $invalidName.hide();
+        namePass = true; 
+    }else{
+    $inputName.css({'border-color':'red'});
+    $invalidName.show();
+    namePass = false; 
+    }
+})
+
+$inputEmail.prev().append($invalidEmail);
+$invalidEmail.hide();
+
+$($inputEmail).blur( ()=>{
+    if(validEmail($inputEmail.val())){
+        $inputEmail.css({'border-color':'#c1deeb'});
+        $invalidEmail.hide();
+        emailPass = true; 
+    }else{
+        $inputEmail.css({'border-color':'red'});
+        $invalidEmail.show();
+        emailPass = false; 
+    }
+})
+
+$creditCard.prev().append($invalidCC);
+$invalidCC.hide();
+
+$($creditCard).blur( ()=>{
+    if(validCreditcard($creditCard.val())){
+        $creditCard.css({'border-color':'#c1deeb'});
+        $invalidCC.hide();
+        ccPass = true; 
+    }else{
+        $creditCard.css({'border-color':'red'});
+        $invalidCC.show();
+        ccPass = false; 
+    }
+})
+
+$zipCode.prev().append($invalidZip);
+$invalidZip.hide();
+
+$($zipCode).blur( ()=>{
+    if(validZip($zipCode.val())){
+        $zipCode.css({'border-color':'#c1deeb'});
+        $invalidZip.hide();
+        zipPass = true; 
+    }else{
+        $zipCode.css({'border-color':'red'});
+        $invalidZip.show();
+        zipPass = false; 
+    }
+})
+
+$cvv.prev().append($invalidCvv);
+$invalidCvv.hide();
+
+$($cvv).blur( ()=>{
+    if(validCvv($cvv.val())){
+        $cvv.css({'border-color':'#c1deeb'});
+        $invalidCvv.hide();
+        cvvPass = true; 
+    }else{
+        $cvv.css({'border-color':'red'});
+        $invalidCvv.show();
+        cvvPass = false; 
+    }
+})
+
+//created the validation functions to check for valid
+//user inputs
 
 function validName (userName){
     if(userName != ''){
@@ -50,6 +147,116 @@ function validCvv(userCVV){
         return false
 }
 
+
+//******************** Submit Form ************************** */
+
+//tests to check if each field has been validly completed. 
+//If it has been, it submits the form. Otherwise it generates an alert
+//letting the user know which field needs to be corrected. 
+//if a field has not been submitted correctly, the form will automatically
+//focus that field. 
+
+$('.container').on('click', 'button', (e) => {
+    if(!namePass){
+        e.preventDefault()
+        $('#name').css({'border-color':'red'})
+        $('#name').focus();
+    }else if (!emailPass){
+        e.preventDefault()
+        $('#mail').css({'border-color':'red'})
+        $('#mail').focus();
+    }else if(cost == 0){
+        e.preventDefault();
+        alert('You must select at least one conference event!')
+    }else if($ccDiv.is(':visible')){
+        if(!ccPass){
+            e.preventDefault()
+            $('#cc-num').css({'border-color':'red'})
+            $('#cc-num').focus();
+        }else if(!zipPass){
+            e.preventDefault()
+            $('#zip').css({'border-color':'red'})
+            $('#zip').focus();
+        }else if(!cvvPass){
+            e.preventDefault()
+            $('#cvv').css({'border-color':'red'})
+            $('#cvv').focus();
+        }else{
+            alert('Form successfully submitted!')
+        }
+    }
+})
+
+//******************** Job Roles ************************** */
+
+//created a function to check which role is selected
+//if "other" is selected, an input box opens to accept an input
+//if any other choice is selected, the box goes away. 
+
+const $otherJob = $('#other-title');
+
+$($otherJob).hide();
+
+$('#title').change( ()=> {
+    if($('#title').val() === 'other'){
+        $($otherJob).show();
+    }else{
+        $($otherJob).hide();
+    }
+})
+
+//******************** T-Shirts ************************** */
+
+//created variables to select the different HTML elements that
+//are used in this section. 
+
+const $puns = $('#design option:eq(1)');
+const $hearts = $('#design option:eq(2)');
+
+const $cornFlowerBlue = $('#color option:eq(0)'); 
+const $darkSlateGrey = $cornFlowerBlue.next();
+const $gold = $darkSlateGrey.next();
+const $tomato = $gold.next();
+const $steelBlue = $tomato.next();
+const $dimGrey = $steelBlue.next();
+
+//created variable to show or hide the shirt colors. 
+const $shirtColors = $('#colors-js-puns');
+$shirtColors.hide();
+
+//created the functionality to show the correct colors
+//or not colors that will be available depending on which
+//design element is selected. 
+
+$('#design').change( () => {
+    if($('#design').val() === "js puns"){
+
+        $cornFlowerBlue.show();
+        $darkSlateGrey.show();
+        $gold.show();
+
+        $tomato.hide();
+        $steelBlue.hide();
+        $dimGrey.hide();
+
+        $shirtColors.show();
+    }else if($('#design').val() === "heart js"){
+
+        $cornFlowerBlue.hide();
+        $darkSlateGrey.hide();
+        $gold.hide();
+
+        $tomato.show();
+        $steelBlue.show();
+        $dimGrey.show();
+
+        $shirtColors.show();
+    }else{
+        $shirtColors.hide();
+    }
+})
+
+
 //******************** CONFERENCE EVENTS ************************** */
 
 let cost = 0;
@@ -81,6 +288,9 @@ function removeCost(){
     $('#total-cost-div')[0].textContent = `Total: $${cost}`
 }
 
+
+//selected the variables that will be used in the below section
+//as well as created the "errors" for conflicting timne slots
 const $all = $('input[name=all]');
 const $jsFrameworks = $('input[name=js-frameworks]');
 const $jsLibraries = $('input[name=js-libs]');
@@ -92,6 +302,13 @@ const $npmWorkshop = $('input[name=npm]');
 const $unavailable = $('<div id=unavailable-time style="color:maroon; font-size:12px">This event conflicts with another event you have selected.</div>'); 
 const $unavailable2 = $('<div id=unavailable-time style="color:maroon; font-size:12px">This event conflicts with another event you have selected.</div>'); 
 
+
+//created the functionality to determine and total costs
+//as well as any conflicts that arise between events. 
+//checkboxes will be disabled and notifications will be showsn
+//if there is a conflict. 
+//when there is no conflict, totals will be added and removed as 
+//necessary. 
 $($all).change( () => {
     if(($all).is(':checked')){
         addCost();
@@ -180,92 +397,40 @@ $($npmWorkshop).change( () => {
     }
 })
 
-
-console.log(
-    $all,
-    $jsFrameworks,
-    $jsLibraries,
-    $expressWorkshop,
-    $nodeWorkshop,
-    $buildTools,
-    $npmWorkshop
-)
-
-// <fieldset class="activities">
-//         <legend>Register for Activities</legend>
-//         <label><input type="checkbox" name="all"> Main Conference — $200</label>
-//         <label><input type="checkbox" name="js-frameworks"> JavaScript Frameworks Workshop — Tuesday 9am-12pm, $100</label>
-//         <label><input type="checkbox" name="js-libs"> JavaScript Libraries Workshop — Tuesday 1pm-4pm, $100</label>
-//         <label><input type="checkbox" name="express"> Express Workshop — Tuesday 9am-12pm, $100</label>
-//         <label><input type="checkbox" name="node"> Node.js Workshop — Tuesday 1pm-4pm, $100</label>          
-//         <label><input type="checkbox" name="build-tools"> Build tools Workshop — Wednesday 9am-12pm, $100</label>
-//         <label><input type="checkbox" name="npm"> npm Workshop — Wednesday 1pm-4pm, $100</label>
-                  	
-// </fieldset>\
-
 //******************** PAYMENT METHOD ************************** */
 
+//selected the payment variables that will be used in this section. 
+const $ccPayment = $('#payment option:eq(1)');
+const $ppPaymeny = $('#payment option:eq(2)');
+const $bitPayment = $('#payment option:eq(3)');
 
+const $ccDiv = $('#credit-card');
+const $ppDiv = $('p:eq(0)');
+const $bitDiv = $('p:eq(1)');
 
-{/* <fieldset>
-<legend>Payment Info</legend>
+// hid the "select payment" as well as the unnecessary paypal
+// and bitcoin text. Set Credit card as the default method. 
+$('#payment option:eq(0)').hide();
+$ppDiv.hide();
+$bitDiv.hide();
 
-<label for="payment">I'm going to pay with:</label>
-<select id="payment" name="user_payment">
-  <option value="select_method">Select Payment Method</option>
-  <option value="credit card">Credit Card</option>
-  <option value="paypal">PayPal</option>
-  <option value="bitcoin">Bitcoin</option>
-</select>
+$ccPayment.prop('selected', true);
 
-<div id="credit-card" class="credit-card">
+//created the functionalty to show the appropriate fields
+//depending on the selections from the payment field. 
 
-  <div class="col-6 col">
-    <label for="cc-num">Card Number:</label>
-      <input id="cc-num" name="user_cc-num" type="text">
-  </div>
-
-  <div class="col-3 col">
-    <label for="zip">Zip Code:</label>
-    <input id="zip" name="user_zip" type="text"> 
-  </div>
-
-  <div class="col-3 col">
-    <label for="cvv">CVV:</label>
-    <input id="cvv" name="user_cvv" type="text"> 
-  </div>
-
-  <label for="exp-month">Expiration Date:</label>
-  <select id="exp-month" name="user_exp-month">
-    <option value="1">1 - January</option>
-    <option value="2">2 - February</option>
-    <option value="3">3 - March</option>
-    <option value="4">4 - April</option>
-    <option value="5">5 - May</option>
-    <option value="6">6 - June</option>
-    <option value="7">7 - July</option>
-    <option value="8">8 - August</option>
-    <option value="9">9 - September</option>
-    <option value="10">10 - October</option>
-    <option value="11">11 - November</option>	
-    <option value="12">12 - December</option>          		          
-  </select>
-  <label for="exp-year">Expiration Year:</label>
-  <select id="exp-year" name="user_exp-year">
-    <option value="2016">2016</option>
-    <option value="2017">2017</option>
-    <option value="2018">2018</option>
-    <option value="2019">2019</option>
-    <option value="2020">2020</option>        		          
-  </select> 	                  	         
-</div>
-
-<div>
-    <p>If you selected the PayPal option we'll take you to Paypal's site to set up your billing information, when you click “Register” below.</p>
-</div> 
-
-<div>
-    <p>If you selected the Bitcoin option we'll take you to the Coinbase site to set up your billing information. Due to the nature of exchanging Bitcoin, all Bitcoin transactions will be final.</p>
-</div>                  
-
-</fieldset>     */}
+$('#payment').change( ()=> {
+    if($('#payment').val() === 'paypal'){
+        $ccDiv.hide();
+        $ppDiv.show();
+        $bitDiv.hide();
+    }else if($('#payment').val() === 'bitcoin'){
+        $ccDiv.hide();
+        $ppDiv.hide();
+        $bitDiv.show();
+    }else{
+        $ccDiv.show();
+        $ppDiv.hide();
+        $bitDiv.hide();
+    }
+})
