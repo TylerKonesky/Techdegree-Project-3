@@ -240,6 +240,7 @@ $shirtColors.hide();
 
 $('#design').change( () => {
     if($('#design').val() === "js puns"){
+        $('#color option[value="cornflowerblue"]').prop('selected', true);
 
         $cornFlowerBlue.show();
         $darkSlateGrey.show();
@@ -251,6 +252,7 @@ $('#design').change( () => {
 
         $shirtColors.show();
     }else if($('#design').val() === "heart js"){
+        $('#color option[value="tomato"]').prop('selected', true);
 
         $cornFlowerBlue.hide();
         $darkSlateGrey.hide();
